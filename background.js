@@ -10,12 +10,12 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.querySelector('#loginButton').addEventListener('click', function () {
 		var u = document.querySelector('#username').value;
 		var p = document.querySelector('#password').value;
-		var url = serviceUrl + '/login';
+		/*var url = serviceUrl + '/login';
 		var xhr = new XMLHttpRequest();
 		xhr.open("POST", url, true);
 		xhr.withCredentials = true;
 		xhr.setRequestHeader('Content-Type', 'application/json');
-		xhr.onreadystatechange = function() {
+		xhr.onloadend = function() {
 			if (xhr.readyState == 4) {
 				var resp = xhr.responseText;
 				console.log(resp);
@@ -23,7 +23,20 @@ document.addEventListener('DOMContentLoaded', function () {
 				sendMessage({msg: 'testService', response: resp});
 			}
 		};
-		xhr.send(JSON.stringify({username: u, password: p}));
+		xhr.send(JSON.stringify({username: u, password: p}));*/
+		$.ajax({
+			type: 'POST',
+			url: serviceUrl + '/login',
+			data: {username: u, password: p},
+			success: function (resp) {
+				console.log(resp);
+				sendMessage({msg: 'testService', response: resp});
+			},
+			dataType: 'json',
+			xhrFields: {
+				withCredentials: true
+			}
+		});
 	});
 	$('#context').on('input', function () {
 		localStorage.context = $('#context').val();
@@ -31,10 +44,10 @@ document.addEventListener('DOMContentLoaded', function () {
 	$('#context').val(localStorage.context);
 	isAuthorized(function(xhr) {
 		if (xhr.status == 401) {
-			//$('.loginForm').show();
+			$('.loginForm').show();
 		}
 	});
-	$('.statusForm').show();
+	//$('.statusForm').show();
 	//$('.mainForm').show();
 });
 
