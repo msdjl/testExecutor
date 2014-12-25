@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+  <title>Popup Page</title>
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <script src="jquery.js"></script>
+  <script src="background.js"></script>
+  <style type="text/css">
+    html, body {
+      width: 300px;
+      height: 300px;
+    }
+    .loginForm {
+      display: none;
+    }
+    .mainForm {
+      display: none;
+    }
+    .statusForm {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="loginForm">
+    username <input id="username"><br>
+    password <input id="password" type="password"><br>
+    <button id="loginButton">login</button><br>
+  </div>
+  <div class="mainForm">
+    context <input id="context">
+    <br>
+    <button id="drawbuttons" class="btn btn-primary">draw buttons</button>
+    <br>
+    <button id="testService" class="btn btn-danger">test service</button>
+  </div>
+  <div class="statusForm">
+    айди страницы <br>
+    версия страницы <br>
+    ишью <br>
+    всего тестов <br>
+    тестов с пометкой pass <br>
+    тестов с пометкой fail <br>
+    <button>изменить контекст</button>
+  </div>
+</body>
+</html>
