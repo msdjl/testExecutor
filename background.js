@@ -1,5 +1,5 @@
 var currentContext = {};
-var serviceUrl = 'http://127.0.0.1:8080';
+var serviceUrl = 'http://127.0.0.1:3000';
 document.addEventListener('DOMContentLoaded', function () {
 	document.querySelector('#drawbuttons').addEventListener('click', function () {
 		sendMessage({msg: 'drawButtons'}, function (data) {
@@ -22,14 +22,8 @@ document.addEventListener('DOMContentLoaded', function () {
 				//setCookie('connect.sid', resp)
 				sendMessage({msg: 'testService', response: resp});
 			}
-		}
+		};
 		xhr.send(JSON.stringify({username: u, password: p}));
-	});
-	document.querySelector('#testService').addEventListener('click', function () {
-		isAuthorized(function (xhr) {
-			var resp = xhr.responseText;
-			sendMessage({msg: 'testService', response: resp});
-		});
 	});
 	$('#context').on('input', function () {
 		localStorage.context = $('#context').val();
@@ -37,9 +31,11 @@ document.addEventListener('DOMContentLoaded', function () {
 	$('#context').val(localStorage.context);
 	isAuthorized(function(xhr) {
 		if (xhr.status == 401) {
-			$('.loginForm').show();
+			//$('.loginForm').show();
 		}
 	});
+	$('.statusForm').show();
+	//$('.mainForm').show();
 });
 
 function isAuthorized (cb) {

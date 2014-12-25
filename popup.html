@@ -8,7 +8,7 @@
   <style type="text/css">
     html, body {
       width: 300px;
-      height: 300px;
+      padding-top: 5px;
     }
     .loginForm {
       display: none;
@@ -19,29 +19,88 @@
     .statusForm {
       display: none;
     }
+    #changecontext {
+      margin-bottom: 15px;
+    }
   </style>
 </head>
 <body>
-  <div class="loginForm">
-    username <input id="username"><br>
-    password <input id="password" type="password"><br>
-    <button id="loginButton">login</button><br>
+  <div class="loginForm container">
+    <form class="form-horizontal">
+      <div class="form-group">
+        <label for="username" class="col-sm-2 control-label">Login</label>
+        <div class="col-sm-10">
+          <input id="username" type="text" class="form-control" placeholder="Login">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">Password</label>
+        <div class="col-sm-10">
+          <input id="password" type="password" class="form-control" placeholder="Password">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button id="loginButton" class="btn btn-primary">Sign in</button>
+        </div>
+      </div>
+    </form>
   </div>
-  <div class="mainForm">
-    context <input id="context">
-    <br>
-    <button id="drawbuttons" class="btn btn-primary">draw buttons</button>
-    <br>
-    <button id="testService" class="btn btn-danger">test service</button>
+  <div class="mainForm container">
+    <div class="row">
+      <div class="col-xs-12">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label for="context" class="col-sm-2 control-label">Context</label>
+            <div class="col-sm-10">
+              <input id="context" type="text" class="form-control" placeholder="Context">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button id="drawbuttons" class="btn btn-primary">Draw buttons</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-  <div class="statusForm">
-    айди страницы <br>
-    версия страницы <br>
-    ишью <br>
-    всего тестов <br>
-    тестов с пометкой pass <br>
-    тестов с пометкой fail <br>
-    <button>изменить контекст</button>
+  <div class="statusForm container">
+    <div class="row">
+      <div class="col-xs-12">
+        Page ID
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        Page version
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        Issue ID
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        Amount of tests
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        Passed
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        Failed
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-offset-5 col-xs-7">
+        <button id="changecontext" class="btn btn-warning">Change context</button>
+      </div>
+    </div>
   </div>
 </body>
 </html>
