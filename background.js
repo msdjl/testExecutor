@@ -1,6 +1,21 @@
 var currentContext = {};
-var serviceUrl = 'http://127.0.0.1:3000';
+var serviceUrl = 'https://msdjl.ru';
 document.addEventListener('DOMContentLoaded', function () {
+	document.querySelector('#logout').addEventListener('click', function () {
+		$.ajax({
+			type: 'POST',
+			url: serviceUrl + '/logout',
+			data: {},
+			success: function (resp) {
+				console.log(resp);
+				sendMessage({msg: 'testService', response: resp});
+			},
+			dataType: 'json',
+			xhrFields: {
+				withCredentials: true
+			}
+		});
+	});
 	document.querySelector('#drawbuttons').addEventListener('click', function () {
 		sendMessage({msg: 'drawButtons'}, function (data) {
 			currentContext = data;
@@ -45,10 +60,15 @@ document.addEventListener('DOMContentLoaded', function () {
 	isAuthorized(function(xhr) {
 		if (xhr.status == 401) {
 			$('.loginForm').show();
+			$('#overlap').hide();
+		}
+		else {
+			$('.mainForm').show();
+			$('#overlap').hide();
 		}
 	});
 	//$('.statusForm').show();
-	$('.mainForm').show();
+	//$('.mainForm').show();
 });
 
 function isAuthorized (cb) {
