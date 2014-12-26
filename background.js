@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 	});
 	//$('.statusForm').show();
-	//$('.mainForm').show();
+	$('.mainForm').show();
 });
 
 function isAuthorized (cb) {

@@ -22,9 +22,27 @@
     #changecontext {
       margin-bottom: 15px;
     }
+    #throbber {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      width: 100px;
+      height: 100px;
+      margin: -50px -50px 50px -50px;
+      z-index: 1000;
+    }
+    #overlap {
+      width: 100%;
+      height: 100%;
+      z-index: 999;
+      background-color: #ffffff;
+    }
   </style>
 </head>
 <body>
+  <div id="overlap">
+    <img id="throbber" src="throbber.gif">
+  </div>
   <div class="loginForm container">
     <form class="form-horizontal">
       <div class="form-group">
@@ -40,8 +58,8 @@
         </div>
       </div>
       <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <input type="button" id="loginButton" class="btn btn-primary" value="Sign in">
+        <div class="col-xs-12">
+          <input type="button" id="loginButton" class="col-xs-offset-4 col-xs-4 btn btn-primary" value="Sign in">
         </div>
       </div>
     </form>
@@ -57,8 +75,9 @@
             </div>
           </div>
           <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <button id="drawbuttons" class="btn btn-primary">Draw buttons</button>
+            <div class="col-xs-12">
+              <input type="button" id="drawbuttons" class="col-xs-5 btn btn-primary" value="Draw buttons">
+              <input type="button" id="logout" class="col-xs-offset-2 col-xs-5 btn btn-warning" value="Logout">
             </div>
           </div>
         </form>
@@ -67,38 +86,66 @@
   </div>
   <div class="statusForm container">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-6">
+        Page ID
+      </div>
+      <div class="col-xs-6">
         Page ID
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-6">
+        Page version
+      </div>
+      <div class="col-xs-6">
         Page version
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-6">
+        Issue ID
+      </div>
+      <div class="col-xs-6">
         Issue ID
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12">
+        &nbsp;
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6">
+        Amount of tests
+      </div>
+      <div class="col-xs-6">
         Amount of tests
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-6">
+        Passed
+      </div>
+      <div class="col-xs-6">
         Passed
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-6">
+        Failed
+      </div>
+      <div class="col-xs-6">
         Failed
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-offset-5 col-xs-7">
-        <button id="changecontext" class="btn btn-warning">Change context</button>
+      <div class="col-xs-12">
+        &nbsp;
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <input type="button" id="changecontext" class="col-xs-offset-6 col-xs-6 btn btn-warning" value="Change context">
       </div>
     </div>
   </div>
