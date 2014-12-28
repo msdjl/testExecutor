@@ -2,47 +2,14 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head>
   <title>Popup Page</title>
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-  <script src="jquery.js"></script>
-  <script src="background.js"></script>
-  <style type="text/css">
-    html, body {
-      width: 300px;
-      padding-top: 5px;
-    }
-    .loginForm {
-      display: none;
-    }
-    .mainForm {
-      display: none;
-    }
-    .statusForm {
-      display: none;
-    }
-    #changecontext {
-      margin-bottom: 15px;
-    }
-    #throbber {
-      position: fixed;
-      left: 50%;
-      top: 50%;
-      width: 100px;
-      height: 100px;
-      margin: -50px -50px 50px -50px;
-      z-index: 1000;
-    }
-    #overlap {
-      width: 100%;
-      height: 100%;
-      position: fixed;
-      z-index: 999;
-      background-color: #ffffff;
-    }
-  </style>
+  <link rel="stylesheet" href="../bower/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/popup.css">
+  <script src="../bower/jquery/dist/jquery.min.js"></script>
+  <script src="../js/background.js"></script>
 </head>
 <body>
   <div id="overlap">
-    <img id="throbber" src="throbber.gif">
+    <img id="throbber" src="../img/throbber.gif">
   </div>
   <div class="loginForm container">
     <form class="form-horizontal">

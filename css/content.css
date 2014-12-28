@@ -1,0 +1,6 @@
+@font-face {
+    font-family: 'Glyphicons Halflings';
+
+    src: url('chrome-extension://__MSG_@@extension_id__/bower/bootstrap/dist/fonts/glyphicons-halflings-regular.eot');
+    src: url('chrome-extension://__MSG_@@extension_id__/bower/bootstrap/dist/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('chrome-extension://__MSG_@@extension_id__/bower/bootstrap/dist/fonts/glyphicons-halflings-regular.woff') format('woff'), url('chrome-extension://__MSG_@@extension_id__/bower/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('chrome-extension://__MSG_@@extension_id__/bower/bootstrap/dist/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}

@@ -21,21 +21,24 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 	});
 	document.querySelector('#drawbuttons').addEventListener('click', function () {
-		sendMessage({msg: 'drawButtons'}, function (data) {
-			currentContext = data;
-			currentContext.issue = $('#context').attr('value');
-		});
-		$('.mainForm').hide();
-		$('.statusForm').show();
+		if ($('#context').val()) {
+			sendMessage({msg: 'drawButtons'}, function (data) {
+				currentContext = data;
+				currentContext.issue = $('#context').val();
+			});
+			$('.mainForm').hide();
+			$('.statusForm').show();
+		}
 	});
 	document.querySelector('#changecontext').addEventListener('click', function () {
 		localStorage.context = '';
+		$('#context').val('');
 		$('.statusForm').hide();
 		$('.mainForm').show();
 	});
 	document.querySelector('#loginButton').addEventListener('click', function () {
-		var u = document.querySelector('#username').value;
-		var p = document.querySelector('#password').value;
+		var u = $('#username').val();
+		var p = $('#password').val();
 		$('#overlap').show();
 		$.ajax({
 			type: 'POST',
@@ -43,10 +46,15 @@ document.addEventListener('DOMContentLoaded', function () {
 			data: {username: u, password: p},
 			complete: function (resp) {
 				$('#overlap').hide();
-				$('.loginForm').hide();
-				$('.mainForm').show();
-				console.log(resp);
-				sendMessage({msg: 'testService', response: resp});
+				if (resp.status == 200) {
+					$('.loginForm').hide();
+					$('.mainForm').show();
+					console.log(resp);
+					sendMessage({msg: 'testService', response: resp});
+				}
+				else {
+					$('#password').val('');
+				}
 			},
 			dataType: 'json',
 			xhrFields: {

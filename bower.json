@@ -1,0 +1,8 @@
+{
+  "name": "testExecutor",
+  "private": "true",
+  "dependencies": {
+    "bootstrap": "latest",
+    "jquery": "latest"
+  }
+}
