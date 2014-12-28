@@ -25,7 +25,7 @@ function testService (r) {
 }
 
 function urlParse (url) {
-	var i, tmp, url, arr, obj = {};
+	var i, tmp, arr, obj = {};
 	if (url) {
 		arr = url.match(/\w+=\d+/g);
 		for (i in arr) {
