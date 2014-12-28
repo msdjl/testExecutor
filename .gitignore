@@ -2,3 +2,4 @@
 .DS_Store
 .bower/*
 html/*.html
+node_modules/*
