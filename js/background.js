@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			url: serviceUrl + '/login',
 			data: {username: u, password: p},
 			complete: function (resp) {
+				$('#password').val('');
 				$('#overlap').hide();
 				if (resp.status == 200) {
 					$('.loginForm').hide();
@@ -52,15 +53,22 @@ document.addEventListener('DOMContentLoaded', function () {
 					console.log(resp);
 					sendMessage({msg: 'testService', response: resp});
 				}
-				else {
-					$('#password').val('');
-				}
 			},
 			dataType: 'json',
 			xhrFields: {
 				withCredentials: true
 			}
 		});
+	});
+	$('#password').keypress(function (e) {
+		if (e.which == 13) {
+			$('#loginButton').click();
+		}
+	});
+	$('#username').keypress(function (e) {
+		if (e.which == 13) {
+			$('#loginButton').click();
+		}
 	});
 	$('#context').on('input', function () {
 		localStorage.context = $('#context').val();
