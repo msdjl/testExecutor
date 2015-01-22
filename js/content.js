@@ -1,7 +1,10 @@
 chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
-	var result = window[request.method](request.data);
-	if (result) {
-		sendResponse(result);
+	var result;
+	if (request.method) {
+		result = window[request.method](request.params);
+		if (result) {
+			sendResponse(result);
+		}
 	}
 });
 
