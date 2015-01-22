@@ -1,27 +1,18 @@
 chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
-	window[request.msg](request, sender, sendResponse);
+	var result = window[request.method](request.data);
+	if (result) {
+		sendResponse(result);
+	}
 });
-
-function drawButtons1 (request, sender, sendResponse) {
-	$('tbody tr').find('td:first').append('<div class="testexecutorcontext">'
-	+ '<button class="btn btn-success" onclick="$(this.parentNode).hide(); this.parentNode.parentNode.parentNode.className=\'bg-success\'"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>'
-	+ '<button class="btn btn-danger" onclick="$(this.parentNode).hide(); this.parentNode.parentNode.parentNode.className=\'bg-danger\'"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>'
-	+ '<button class="btn btn-info" onclick="$(this.parentNode).hide()"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></div>');
-	sendResponse(getPageInfo());
-}
-
-function drawButtons (request, sender, sendResponse) {
-	$('tbody tr').attr('testId', function (n) {
-		return n + 1;
-	}).find('td:first').append('');
-}
 
 function sendMessage (data, cb) {
 	chrome.runtime.sendMessage(data, cb);
 }
 
-function testService (r) {
-	console.log(r.response);
+function drawButtons () {
+	$('tbody tr').attr('testId', function (n) {
+		return n + 1;
+	}).find('td:first').append('');
 }
 
 function urlParse (url) {
@@ -49,6 +40,7 @@ function getPageInfo () {
 	var obj = {},
 	pageHistory = urlParse($('.page-history-view a:first').attr('href')),
 	lastModified = urlParse($('.last-modified').attr('href'));
+	obj.context = $('#content').data('context');
 	if (pageHistory) {
 		obj.pageId = pageHistory.pageId;
 		obj.pageVersion = pageHistory.originalVersion;
@@ -58,4 +50,8 @@ function getPageInfo () {
 		obj.pageVersion = lastModified.selectedPageVersions[1];
 	}
 	return obj;
+}
+
+function setContext (context) {
+	$('#content').data('context', context);
 }

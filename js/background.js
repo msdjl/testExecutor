@@ -1,7 +1,6 @@
-var currentContext = {};
 var serviceUrl = 'https://msdjl.ru';
-document.addEventListener('DOMContentLoaded', function () {
-	document.querySelector('#logout').addEventListener('click', function () {
+$(function () {
+	$('#logout').click(function () {
 		$('#overlap').show();
 		$.ajax({
 			type: 'POST',
@@ -12,7 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
 				$('.mainForm').hide();
 				$('.loginForm').show();
 				console.log(resp);
-				sendMessage({msg: 'testService', response: resp});
 			},
 			dataType: 'json',
 			xhrFields: {
@@ -20,23 +18,20 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		});
 	});
-	document.querySelector('#drawbuttons').addEventListener('click', function () {
+	$('#drawbuttons').click(function () {
 		if ($('#context').val()) {
-			sendMessage({msg: 'drawButtons'}, function (data) {
-				currentContext = data;
-				currentContext.issue = $('#context').val();
-			});
+			sendMessage({method: 'drawButtons'});
 			$('.mainForm').hide();
 			$('.statusForm').show();
 		}
 	});
-	document.querySelector('#changecontext').addEventListener('click', function () {
+	$('#changecontext').click(function () {
 		localStorage.context = '';
 		$('#context').val('');
 		$('.statusForm').hide();
 		$('.mainForm').show();
 	});
-	document.querySelector('#loginButton').addEventListener('click', function () {
+	$('#loginButton').click(function () {
 		var u = $('#username').val();
 		var p = $('#password').val();
 		$('#overlap').show();
@@ -51,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
 					$('.loginForm').hide();
 					$('.mainForm').show();
 					console.log(resp);
-					sendMessage({msg: 'testService', response: resp});
 				}
 			},
 			dataType: 'json',
@@ -60,23 +54,14 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		});
 	});
-	$('#password').keypress(function (e) {
+	$('#password, #username').keypress(function (e) {
 		if (e.which == 13) {
 			$('#loginButton').click();
 		}
 	});
-	$('#username').keypress(function (e) {
-		if (e.which == 13) {
-			$('#loginButton').click();
-		}
-	});
-	$('#context').on('input', function () {
-		localStorage.context = $('#context').val();
-	});
-	$('#context').val(localStorage.context);
-	isAuthorized(function(xhr) {
+	isAuthorized(function(authorized) {
 		$('#overlap').hide();
-		if (xhr.status == 401) {
+		if (!authorized) {
 			$('.loginForm').show();
 		}
 		else {
@@ -91,16 +76,18 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function isAuthorized (cb) {
-	var url = serviceUrl + '/isAuthorized';
-	var xhr = new XMLHttpRequest();
-	xhr.open("GET", url, true);
-	xhr.withCredentials = true;
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == 4) {
-			cb(xhr);
+	var authorized;
+	$.ajax({
+		type: 'GET',
+		url: serviceUrl + '/isAuthorized',
+		complete: function (resp) {
+			authorized = resp.status == 200;
+			cb(authorized);
+		},
+		xhrFields: {
+			withCredentials: true
 		}
-	};
-	xhr.send();
+	});
 }
 
 function sendMessage (data, cb) {
