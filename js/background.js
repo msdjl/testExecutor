@@ -1,89 +1,78 @@
-var serviceUrl = 'https://msdjl.ru';
 $(function () {
-	$('#logout').click(function () {
-		$('#overlap').show();
-		$.ajax({
-			type: 'POST',
-			url: serviceUrl + '/logout',
-			data: {},
-			complete: function (resp) {
-				$('#overlap').hide();
-				$('.mainForm').hide();
-				$('.loginForm').show();
-				console.log(resp);
-			},
-			dataType: 'json',
-			xhrFields: {
-				withCredentials: true
-			}
-		});
-	});
+	$('#logout').click(logout);
+
+	$('#loginButton').click(login);
+	$('#password, #username').keypress(login);
+
 	$('#drawbuttons').click(function () {
 		if ($('#context').val()) {
 			sendMessage({method: 'drawButtons'});
-			$('.mainForm').hide();
-			$('.statusForm').show();
+			showPage('.statusForm');
 		}
 	});
+
 	$('#changecontext').click(function () {
-		localStorage.context = '';
 		$('#context').val('');
-		$('.statusForm').hide();
-		$('.mainForm').show();
+		showPage('.mainForm');
 	});
-	$('#loginButton').click(function () {
-		var u = $('#username').val();
-		var p = $('#password').val();
-		$('#overlap').show();
-		$.ajax({
-			type: 'POST',
-			url: serviceUrl + '/login',
-			data: {username: u, password: p},
-			complete: function (resp) {
-				$('#password').val('');
-				$('#overlap').hide();
-				if (resp.status == 200) {
-					$('.loginForm').hide();
-					$('.mainForm').show();
-					console.log(resp);
-				}
-			},
-			dataType: 'json',
-			xhrFields: {
-				withCredentials: true
-			}
-		});
-	});
-	$('#password, #username').keypress(function (e) {
-		if (e.which == 13) {
-			$('#loginButton').click();
-		}
-	});
+
 	isAuthorized(function(authorized) {
-		$('#overlap').hide();
 		if (!authorized) {
-			$('.loginForm').show();
+			showPage('.loginForm');
 		}
 		else {
-			if (localStorage.context) {
-				$('.statusForm').show();
+			if (false) {
+				showPage('.statusForm');
 			}
 			else {
-				$('.mainForm').show();
+				showPage('.mainForm');
 			}
 		}
 	});
 });
 
+function showPage(page) {
+	$('.loginForm').hide();
+	$('.mainForm').hide();
+	$('.statusForm').hide();
+	$(page).show();
+}
+
 function isAuthorized (cb) {
-	var authorized;
+	requestToService('/isAuthorized', 'GET', null, cb);
+}
+
+function login (e) {
+	if ( e.type == 'click' || (e.type == 'keypress' && e.which == 13) ) {
+		var u = $('#username').val();
+		var p = $('#password').val();
+		requestToService('/login', 'POST', {username: u, password: p}, function (ok) {
+			$('#password').val('');
+			if (ok) {
+				showPage('.mainForm');
+			}
+		});
+	}
+}
+
+function logout () {
+	requestToService('/logout', 'POST', null, function () {
+		showPage('.loginForm');
+	});
+}
+
+function requestToService (url, type, data, cb) {
+	var baseUrl = 'https://msdjl.ru';
+	$('#overlap').show();
 	$.ajax({
-		type: 'GET',
-		url: serviceUrl + '/isAuthorized',
+		type: type,
+		url: baseUrl + url,
+		data: data,
 		complete: function (resp) {
-			authorized = resp.status == 200;
-			cb(authorized);
+			$('#overlap').hide();
+			cb(resp.status == 200);
 		},
+		dataType: 'json',
 		xhrFields: {
 			withCredentials: true
 		}
