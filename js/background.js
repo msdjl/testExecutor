@@ -4,14 +4,10 @@ $(function () {
 	$('#loginButton').click(login);
 	$('#password, #username').keypress(login);
 
-	$('#drawbuttons').click(applyContext);
+	$('#drawbuttons, #changecontext').click(applyContext);
 	$('#context').keypress(applyContext);
 
-	$('#changecontext').click(function () {
-		$('#context').val('');
-		contentMethod('setContext', null);
-		showPage('.mainForm');
-	});
+	$('#sendtojira').click(sendResultsToJira);
 
 	isAuthorized(function(authorized) {
 		if (!authorized) {
@@ -47,11 +43,17 @@ function showPage(page) {
 
 function applyContext (e) {
 	if ( e.type == 'click' || (e.type == 'keypress' && e.which == 13) ) {
-		var c = $('#context').val();
-		if (c) {
-			contentMethod('setContext', c);
-			contentMethod('drawButtons');
+		var changeContext = e.target.id == 'changecontext';
+		var contextEl = $('#context');
+		var newContextVal = contextEl.val();
+		if (!changeContext && newContextVal) {
+			contentMethod('setContext', newContextVal);
 			showPage('.statusForm');
+		}
+		else if (changeContext) {
+			contextEl.val('');
+			contentMethod('setContext', null);
+			showPage('.mainForm');
 		}
 	}
 }
@@ -77,6 +79,10 @@ function logout () {
 	requestToService('/logout', 'POST', null, function () {
 		showPage('.loginForm');
 	});
+}
+
+function sendResultsToJira () {
+	//requestToService
 }
 
 function requestToService (url, type, data, cb) {
