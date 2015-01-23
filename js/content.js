@@ -18,6 +18,10 @@ function drawButtons () {
 	}).find('td:first').append('');
 }
 
+function removeButtons () {
+	// remove
+}
+
 function urlParse (url) {
 	var i, tmp, arr, obj = {};
 	if (url) {
@@ -57,4 +61,10 @@ function getPageInfo () {
 
 function setContext (context) {
 	$('#content').data('context', context);
+	if (context) {
+		drawButtons();
+	}
+	else {
+		removeButtons();
+	}
 }
