@@ -15,7 +15,7 @@ $(function () {
 		}
 		else {
 			contentMethod('getPageInfo', null, function (pageInfo) {
-				if (pageInfo.context) {
+				if (pageInfo.issueKey) {
 					showPage('.statusForm');
 				}
 				else {
@@ -31,7 +31,7 @@ function showPage(page) {
 	$(page).show();
 	if (page == '.statusForm') {
 		contentMethod('getPageInfo', null, function (pageInfo) {
-			$('#sfIssueId').text(pageInfo.context);
+			$('#sfIssueId').text(pageInfo.issueKey);
 			$('#sfPageVersion').text(pageInfo.pageVersion);
 			$('#sfPageId').text(pageInfo.pageId);
 			$('#sfAmountOfTests').text('0');

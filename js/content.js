@@ -13,13 +13,24 @@ function sendMessage (data, cb) {
 }
 
 function drawButtons () {
-	$('tbody tr').attr('testId', function (n) {
-		return n + 1;
-	}).find('td:first').append('');
+	var pageInfo = getPageInfo();
+	var template = $('.testExecutorContainerTemplate').clone();
+	template.removeClass('testExecutorContainerTemplate');
+	template.addClass('testExecutorContainer');
+	template.find('.btn-success').click(function () {
+		alert('success');
+	}).find('.btn-dander').click(function () {
+		alert('danger' + $(this).data('testId'));
+	});
+	$('tbody tr').find('td:first').each(function (n, el) {
+		var data = $.extend( {}, pageInfo, { testId: n, testStatus: '' } );
+		var container = template.clone().data(data);
+		$(el).append(container);
+	});
 }
 
 function removeButtons () {
-	// remove
+	$('.testExecutorContainer').remove();
 }
 
 function urlParse (url) {
@@ -47,7 +58,7 @@ function getPageInfo () {
 	var obj = {},
 	pageHistory = urlParse($('.page-history-view a:first').attr('href')),
 	lastModified = urlParse($('.last-modified').attr('href'));
-	obj.context = $('#content').data('context');
+	obj.issueKey = $('#content').data('issueKey');
 	if (pageHistory) {
 		obj.pageId = pageHistory.pageId;
 		obj.pageVersion = pageHistory.originalVersion;
@@ -60,7 +71,7 @@ function getPageInfo () {
 }
 
 function setContext (context) {
-	$('#content').data('context', context);
+	$('#content').data('issueKey', context);
 	if (context) {
 		drawButtons();
 	}
