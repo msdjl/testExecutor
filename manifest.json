@@ -20,7 +20,7 @@
   },
   "content_scripts": [{
     "matches": ["https://wiki.returnonintelligence.com/*"],
-    "js": ["js/content.js", "bower/jquery/dist/jquery.min.js"],
+    "js": ["js/service.js", "js/content.js", "bower/jquery/dist/jquery.min.js"],
     "css": ["bower/bootstrap/dist/css/bootstrap.min.css", "css/content.css"]
   }],
   "permissions": ["tabs", "activeTab"],
