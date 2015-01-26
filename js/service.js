@@ -22,7 +22,27 @@ function logout () {
 }
 
 function sendResultsToJira () {
-	//requestToService
+	$('#sendtojira').prop('disabled', true);
+	contentMethod('getPageInfo', null, function (pageInfo) {
+		var comment = 'Amount of tests: ' + pageInfo.amountOfTests;
+		comment += '\nPassed: ' + pageInfo.passed;
+		comment += '\nFailed: ' + pageInfo.failed;
+		comment += '\nNot checked: ' + pageInfo.notCheckedYet;
+		comment += '\n\n[Sreenshot here|https://msdjl.ru/getwikipagescreenshot?';
+		comment += $.param({pageId: pageInfo.pageId,
+			pageVersion: pageInfo.pageVersion,
+			issueKey: pageInfo.issueKey
+		});
+		comment += ']';
+		var data = {pageId: pageInfo.pageId,
+			pageVersion: pageInfo.pageVersion,
+			issueKey: pageInfo.issueKey,
+			comment: comment
+		};
+		requestToService('/testcomment', 'POST', data, function () {
+			$('#sendtojira').prop('disabled', false);
+		});
+	});
 }
 
 function getTests (pageId, pageVersion, issueKey, cb) {
