@@ -28,7 +28,7 @@ function sendResultsToJira () {
 		comment += '\nPassed: ' + pageInfo.passed;
 		comment += '\nFailed: ' + pageInfo.failed;
 		comment += '\nNot checked: ' + pageInfo.notCheckedYet;
-		comment += '\n\n[Sreenshot here|https://msdjl.ru/getwikipagescreenshot?';
+		comment += '\n\n[Screenshot here|https://msdjl.ru/getwikipagescreenshot?';
 		comment += $.param({pageId: pageInfo.pageId,
 			pageVersion: pageInfo.pageVersion,
 			issueKey: pageInfo.issueKey
