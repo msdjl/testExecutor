@@ -37,6 +37,7 @@ function showPage(page) {
 			$('#sfAmountOfTests').text(pageInfo.amountOfTests);
 			$('#sfPassed').text(pageInfo.passed);
 			$('#sfFailed').text(pageInfo.failed);
+			$('#sfNotCheckedYet').text(pageInfo.notCheckedYet);
 		});
 	}
 }

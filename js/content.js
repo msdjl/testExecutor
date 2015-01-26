@@ -12,10 +12,6 @@ function sendMessage (data, cb) {
 	chrome.runtime.sendMessage(data, cb);
 }
 
-function backgroundMethod (method, params, cb) {
-	sendMessage({ method: method, params: params }, cb);
-}
-
 function drawButtons (tests) {
 	var pageInfo = getPageInfo(), testsObj = {};
 	if (tests) {
@@ -48,22 +44,13 @@ function clickButtonHandler (e) {
 		testEl = buttonEl.parent(),
 		trEl = testEl.parent().parent();
 
-	if (buttonEl.hasClass('btn-success')) {
-		newStatus = 'Passed';
-	}
-	else if (buttonEl.hasClass('btn-danger')) {
-		newStatus = 'Failed';
-	}
-	else {
-		newStatus = '';
-	}
+	newStatus = buttonEl.data('newStatus');
 	testEl.data('testStatus', newStatus);
 	updateTrBackground(trEl);
 
 	testEl.find('.btn').prop('disabled', true);
 	saveTest(testEl.data(), function () {
 		testEl.find('.btn').prop('disabled', false);
-		console.log(arguments);
 	});
 }
 
@@ -90,7 +77,6 @@ function urlParse (url) {
 			if (obj[tmp[0]]) {
 				if (!Array.isArray(obj[tmp[0]])) {
 					obj[tmp[0]] = [obj[tmp[0]]];
-
 				}
 				obj[tmp[0]].push(tmp[1]);
 			}
@@ -112,13 +98,16 @@ function getPageInfo () {
 	obj.amountOfTests = testsEls.length;
 	obj.passed = 0;
 	obj.failed = 0;
+	obj.notCheckedYet = obj.amountOfTests;
 	testsEls.each(function (n, el) {
 		var status = $(el).data('testStatus');
 		if (status == 'Passed') {
 			obj.passed++;
+			obj.notCheckedYet--;
 		}
 		else if (status == 'Failed') {
 			obj.failed++;
+			obj.notCheckedYet--;
 		}
 	});
 
