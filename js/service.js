@@ -24,7 +24,10 @@ function logout () {
 function sendResultsToJira () {
 	$('#sendtojira').prop('disabled', true);
 	contentMethod('getPageInfo', null, function (pageInfo) {
-		var comment = 'Amount of tests: ' + pageInfo.amountOfTests;
+		var pageUrl = 'https://wiki.returnonintelligence.com/pages/viewpage.action?pageId=' + pageInfo.pageId;
+		var comment = 'Tested on version ' + pageInfo.pageVersion;
+		comment += ' of the [checklist|' + pageUrl + ']';
+		comment += '\n\nAmount of tests: ' + pageInfo.amountOfTests;
 		comment += '\nPassed: ' + pageInfo.passed;
 		comment += '\nFailed: ' + pageInfo.failed;
 		comment += '\nNot checked: ' + pageInfo.notCheckedYet;
