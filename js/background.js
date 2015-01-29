@@ -40,6 +40,12 @@ function showPage(page) {
 			$('#sfNotCheckedYet').text(pageInfo.notCheckedYet);
 		});
 	}
+	if (page == '.mainForm') {
+		$('#context').focus();
+	}
+	if (page == '.loginForm') {
+		$('#username').focus();
+	}
 }
 
 function applyContext (e) {
