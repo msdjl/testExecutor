@@ -30,7 +30,7 @@ function sendResultsToJira () {
 		comment += '\n\nAmount of tests: ' + pageInfo.amountOfTests;
 		comment += '\nPassed: ' + pageInfo.passed;
 		comment += '\nFailed: ' + pageInfo.failed;
-		comment += '\nNot checked: ' + pageInfo.notCheckedYet;li
+		comment += '\nNot checked: ' + pageInfo.notCheckedYet;
 		var data = {pageId: pageInfo.pageId,
 			pageVersion: pageInfo.pageVersion,
 			issueKey: pageInfo.issueKey,
