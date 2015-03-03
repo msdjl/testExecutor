@@ -30,13 +30,7 @@ function sendResultsToJira () {
 		comment += '\n\nAmount of tests: ' + pageInfo.amountOfTests;
 		comment += '\nPassed: ' + pageInfo.passed;
 		comment += '\nFailed: ' + pageInfo.failed;
-		comment += '\nNot checked: ' + pageInfo.notCheckedYet;
-		comment += '\n\n[Screenshot here|https://msdjl.ru/getwikipagescreenshot?';
-		comment += $.param({pageId: pageInfo.pageId,
-			pageVersion: pageInfo.pageVersion,
-			issueKey: pageInfo.issueKey
-		});
-		comment += ']';
+		comment += '\nNot checked: ' + pageInfo.notCheckedYet;li
 		var data = {pageId: pageInfo.pageId,
 			pageVersion: pageInfo.pageVersion,
 			issueKey: pageInfo.issueKey,
