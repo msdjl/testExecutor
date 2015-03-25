@@ -71,6 +71,12 @@ function applyContext (e) {
 	}
 }
 
+function screenshot (cb) {
+	contentMethod('screenshot', null, function (data) {
+		cb(data);
+	});
+}
+
 function contentMethod (method, params, cb) {
 	sendMessage({ method: method, params: params }, cb);
 }

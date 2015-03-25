@@ -31,13 +31,18 @@ function sendResultsToJira () {
 		comment += '\nPassed: ' + pageInfo.passed;
 		comment += '\nFailed: ' + pageInfo.failed;
 		comment += '\nNot checked: ' + pageInfo.notCheckedYet;
-		var data = {pageId: pageInfo.pageId,
+		var data = {
+			pageId: pageInfo.pageId,
 			pageVersion: pageInfo.pageVersion,
 			issueKey: pageInfo.issueKey,
 			comment: comment
 		};
-		requestToService('/testcomment', 'POST', data, function () {
-			$('#sendtojira').prop('disabled', false);
+		$('#overlap').show();
+		screenshot(function (img) {
+			data.img = img.substring(22);
+			requestToService('/testcomment', 'POST', data, function () {
+				$('#sendtojira').prop('disabled', false);
+			});
 		});
 	});
 }

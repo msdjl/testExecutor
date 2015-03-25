@@ -1,10 +1,7 @@
 chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
-	var result;
 	if (request.method && !sender.tab) {
-		result = window[request.method](request.params);
-		if (result) {
-			sendResponse(result);
-		}
+		window[request.method](request.params, sendResponse);
+		return true;
 	}
 });
 
@@ -88,7 +85,7 @@ function urlParse (url) {
 	}
 }
 
-function getPageInfo () {
+function getPageInfo (params, cb) {
 	var obj = {},
 		pageHistory = urlParse($('.page-history-view a:first').attr('href')),
 		lastModified = urlParse($('.last-modified').attr('href')),
@@ -119,10 +116,59 @@ function getPageInfo () {
 		obj.pageId = lastModified.pageId;
 		obj.pageVersion = lastModified.selectedPageVersions[1];
 	}
+	if (cb) cb(obj);
 	return obj;
 }
 
-function setContext (context) {
+function getTests () {
+	var tests = {};
+	$('.testExecutorContainer').each(function (n, el) {
+		tests[n] = $(el).data('testStatus');
+	});
+	return tests;
+}
+
+function screenshot (params, cb) {
+	var body = null;
+	var tests = getTests();
+	var frame = $('<iframe>')
+		.attr('width', 1500)
+		.attr('height', 1000)
+		.attr('src', window.location.href)
+		.appendTo('body')
+		.on('load', function () {
+			body = frame[0].contentDocument.body;
+			fixWikiPage(tests, body);
+			html2canvas(body, {
+				onrendered: function(canvas) {
+					frame.remove();
+					cb(canvas.toDataURL());
+				}
+			});
+		});
+}
+
+function fixWikiPage (tests, body) {
+	tests = tests || {};
+	body = $(body || window.document.body);
+	body.html(body.find('#main').html());
+	body.find('#comments-section, #likes-and-labels-container, #navigation, #page-history-warning').remove();
+	body.find('.table-wrap').css('overflow', 'visible');
+	body.parent().css('padding', '10px').css('backgroundColor', 'white');
+	body.css('overflow', 'visible').css('backgroundColor', 'white');
+	body.find('tbody tr').find('td:first').each(function (n, el) {
+		var status = tests[n] || '';
+		var tr = $(el).parent();
+		if (status == 'Passed') {
+			tr.css('backgroundColor', 'rgb(223, 240, 216)');
+		}
+		else if (status == 'Failed') {
+			tr.css('backgroundColor', 'rgb(242, 222, 222)');
+		}
+	});
+}
+
+function setContext (context, cb) {
 	if (context) {
 		$('#content').data('issueKey', context.issueKey);
 		drawButtons(context.tests.tests);
@@ -131,20 +177,6 @@ function setContext (context) {
 		$('#content').data('issueKey', '');
 		removeButtons();
 	}
+	if (cb) cb(true);
 	return true;
 }
-/*
-function screenshot () {
-	var frame = $('<iframe>')
-		.attr('width', 1500)
-		.attr('height', 1000)
-		.attr('src', window.location.href)
-		.appendTo('body');
-	var body = frame[0].contentDocument.body;
-	$(body).onload(function (){console.log('done')});
-	html2canvas(document.body, {
-		onrendered: function(canvas) {
-			document.body.appendChild(canvas);
-		}
-	});
-}*/
