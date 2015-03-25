@@ -133,3 +133,18 @@ function setContext (context) {
 	}
 	return true;
 }
+/*
+function screenshot () {
+	var frame = $('<iframe>')
+		.attr('width', 1500)
+		.attr('height', 1000)
+		.attr('src', window.location.href)
+		.appendTo('body');
+	var body = frame[0].contentDocument.body;
+	$(body).onload(function (){console.log('done')});
+	html2canvas(document.body, {
+		onrendered: function(canvas) {
+			document.body.appendChild(canvas);
+		}
+	});
+}*/

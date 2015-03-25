@@ -1,8 +1,9 @@
 {
-  "name": "testExecutor",
-  "private": "true",
-  "dependencies": {
-    "bootstrap": "latest",
-    "jquery": "latest"
-  }
+	"name": "testExecutor",
+	"private": "true",
+	"dependencies": {
+		"bootstrap": "latest",
+		"jquery": "latest",
+		"html2canvas": "latest"
+	}
 }

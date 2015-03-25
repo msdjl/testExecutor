@@ -1,28 +1,36 @@
 {
-  "manifest_version": 2,
-  "name": "testExecutor",
-  "version": "0.1",
-  "description": "A plain text description",
-  "icons": {
-    "48": "img/icon.png"
-  },
-  "browser_action": {
-    "default_icon": {
-      "19": "img/icon.png"
-    },
-    "default_title": "testExecutor",
-    "default_popup": "html/popup.html"
-  },
-  "author": "Alexander Pavlov",
-  "background": {
-    "scripts": ["js/background.js"],
-    "persistent": false
-  },
-  "content_scripts": [{
-    "matches": ["https://wiki.returnonintelligence.com/*"],
-    "js": ["js/service.js", "js/content.js", "bower/jquery/dist/jquery.min.js"],
-    "css": ["bower/bootstrap/dist/css/bootstrap.min.css", "css/content.css"]
-  }],
-  "permissions": ["tabs", "activeTab"],
-  "web_accessible_resources": ["*.*"]
+	"manifest_version": 2,
+	"name": "testExecutor",
+	"version": "0.1",
+	"description": "A plain text description",
+	"icons": {
+		"48": "img/icon.png"
+	},
+	"browser_action": {
+		"default_icon": {
+			"19": "img/icon.png"
+		},
+		"default_title": "testExecutor",
+		"default_popup": "html/popup.html"
+	},
+	"author": "Alexander Pavlov",
+	"background": {
+		"scripts": ["js/background.js"],
+		"persistent": false
+	},
+	"content_scripts": [{
+		"matches": ["https://wiki.returnonintelligence.com/*"],
+		"js": [
+			"js/service.js",
+			"js/content.js",
+			"bower/jquery/dist/jquery.min.js",
+			"bower/html2canvas/build/html2canvas.min.js"
+		],
+		"css": [
+			"bower/bootstrap/dist/css/bootstrap.min.css",
+			"css/content.css"
+		]
+	}],
+	"permissions": ["tabs", "activeTab"],
+	"web_accessible_resources": ["*.*"]
 }
