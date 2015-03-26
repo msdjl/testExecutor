@@ -72,9 +72,7 @@ function applyContext (e) {
 }
 
 function screenshot (cb) {
-	contentMethod('screenshot', null, function (data) {
-		cb(data);
-	});
+	contentMethod('screenshot', null, cb);
 }
 
 function contentMethod (method, params, cb) {
