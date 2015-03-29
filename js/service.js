@@ -40,7 +40,7 @@ function sendResultsToJira () {
 		$('#overlap').show();
 		screenshot(function (img) {
 			data.img = img.substring(22);
-			requestToService('/testcomment', 'POST', data, function () {
+			requestToService('/generatereport', 'POST', data, function () {
 				$('#sendtojira').prop('disabled', false);
 			});
 		});

@@ -10,18 +10,13 @@ function sendMessage (data, cb) {
 }
 
 function drawButtons (tests) {
-	var pageInfo = getPageInfo(), testsObj = {};
-	if (tests) {
-		for (var i in tests) {
-			testsObj[tests[i].testId] = tests[i].testStatus;
-		}
-	}
+	var pageInfo = getPageInfo();
 	$.get(chrome.extension.getURL('/html/buttons.html'), function(template) {
 		var t = $(template);
 		t.find('.btn').click(clickButtonHandler);
 
 		$('tbody tr').find('td:first').each(function (n, el) {
-			var data = $.extend( {}, pageInfo, { testId: n, testStatus: testsObj[n] || '' } );
+			var data = $.extend( {}, pageInfo, { testId: n, testStatus: tests[n] || '' } );
 			var container = t.clone(true, true).data(data);
 			$(el).append(container);
 		});
