@@ -31,6 +31,10 @@
 			"css/content.css"
 		]
 	}],
-	"permissions": ["tabs", "activeTab"],
+	"permissions": [
+		"tabs",
+		"activeTab",
+		"https://jira.returnonintelligence.com/"
+	],
 	"web_accessible_resources": ["*.*"]
 }
