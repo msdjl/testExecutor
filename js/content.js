@@ -109,7 +109,7 @@ function getPageInfo (params, cb) {
 	}
 	else {
 		obj.pageId = lastModified.pageId;
-		obj.pageVersion = lastModified.selectedPageVersions[1];
+		obj.pageVersion = lastModified.selectedPageVersions ? lastModified.selectedPageVersions[1] : '1';
 	}
 	if (cb) cb(obj);
 	return obj;
