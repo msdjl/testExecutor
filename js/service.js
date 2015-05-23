@@ -1,57 +1,24 @@
-function isAuthorized (cb) {
+function isAuthorized (params, cb) {
 	requestToService('/isAuthorized', 'GET', null, cb);
 }
 
-function login (e) {
-	if ( e.type == 'click' || (e.type == 'keypress' && e.which == 13) ) {
-		var u = $('#username').val();
-		var p = $('#password').val();
-		requestToService('/login', 'POST', { username: u, password: p }, function (resp) {
-			$('#password').val('');
-			if (resp.status == 200) {
-				showPage('.mainForm');
-			}
-		});
-	}
+function login (params, cb) {
+	requestToService('/login', 'POST', { username: params.username, password: params.password }, cb);
 }
 
-function logout () {
-	requestToService('/logout', 'POST', null, function () {
-		showPage('.loginForm');
-	});
+function logout (params, cb) {
+	requestToService('/logout', 'POST', null, cb);
 }
 
-function sendResultsToJira () {
-	$('#sendtojira').prop('disabled', true);
-	contentMethod('getPageInfo', null, function (pageInfo) {
-		var pageUrl = 'https://wiki.returnonintelligence.com/pages/viewpage.action?pageId=' + pageInfo.pageId;
-		var comment = 'Tested on version ' + pageInfo.pageVersion;
-		comment += ' of the [checklist|' + pageUrl + ']';
-		comment += '\n\nAmount of tests: ' + pageInfo.amountOfTests;
-		comment += '\nPassed: ' + pageInfo.passed;
-		comment += '\nFailed: ' + pageInfo.failed;
-		comment += '\nNot checked: ' + pageInfo.notCheckedYet;
-		var data = {
-			pageId: pageInfo.pageId,
-			pageVersion: pageInfo.pageVersion,
-			issueKey: pageInfo.issueKey,
-			comment: comment
-		};
-		$('#overlap').show();
-		screenshot(function (img) {
-			data.img = img.substring(22);
-			requestToService('/generatereport', 'POST', data, function () {
-				$('#sendtojira').prop('disabled', false);
-			});
-		});
-	});
+function sendResultsToJira (params, cb) {
+	requestToService('/generatereport', 'POST', params, cb);
 }
 
-function getTests (pageId, pageVersion, issueKey, cb) {
+function getTests (params, cb) {
 	var url = '/gettests?' + $.param({
-			pageId: pageId,
-			pageVersion: pageVersion,
-			issueKey: issueKey
+			pageId: params.pageId,
+			pageVersion: params.pageVersion,
+			issueKey: params.issueKey
 		});
 	requestToService(url, 'GET', null, cb);
 }
@@ -62,15 +29,11 @@ function saveTest (data, cb) {
 
 function requestToService (url, type, data, cb) {
 	var baseUrl = 'https://msdjl.ru';
-	$('#overlap').show();
 	$.ajax({
 		type: type,
 		url: baseUrl + url,
 		data: data,
-		complete: function (resp) {
-			$('#overlap').hide();
-			cb(resp);
-		},
+		complete: cb,
 		dataType: 'json',
 		xhrFields: {
 			withCredentials: true

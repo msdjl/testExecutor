@@ -5,6 +5,10 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 	}
 });
 
+function backgroundMethod (method, params, cb) {
+	sendMessage({ method: method, params: params }, cb);
+}
+
 function sendMessage (data, cb) {
 	chrome.runtime.sendMessage(data, cb);
 }
@@ -41,7 +45,7 @@ function clickButtonHandler (e) {
 	updateTrBackground(trEl);
 
 	testEl.find('.btn').prop('disabled', true);
-	saveTest(testEl.data(), function () {
+	backgroundMethod('saveTest', testEl.data(), function () {
 		testEl.find('.btn').prop('disabled', false);
 	});
 }
@@ -115,17 +119,12 @@ function getPageInfo (params, cb) {
 	return obj;
 }
 
-function getTests () {
+function screenshot (params, cb) {
+	var body = null;
 	var tests = {};
 	$('.testExecutorContainer').each(function (n, el) {
 		tests[n] = $(el).data('testStatus');
 	});
-	return tests;
-}
-
-function screenshot (params, cb) {
-	var body = null;
-	var tests = getTests();
 	var frame = $('<iframe>')
 		.attr('width', 1500)
 		.attr('height', 1000)
