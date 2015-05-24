@@ -1,12 +1,13 @@
 {
-  "name": "application-name",
-  "version": "0.0.1",
-  "private": "true",
-  "scripts": {
-    "start": "gulp watch"
-  },
-  "dependencies": {
-    "gulp": "latest",
-    "gulp-jade": "latest"
-  }
+	"name": "application-name",
+	"version": "0.0.1",
+	"private": "true",
+	"scripts": {
+		"start": "gulp watch"
+	},
+	"dependencies": {
+		"gulp": "latest",
+		"gulp-jade": "latest",
+		"del": "latest"
+	}
 }
