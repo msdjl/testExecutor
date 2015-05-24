@@ -45,13 +45,13 @@ function screenshot (data, cb) {
 function getTests (data, cb) {
 	var key = data.issueKey + ',' + data.pageId + ',' + data.pageVersion;
 	var obj = localStorage[key] ? JSON.parse(localStorage[key]) : {};
-	cb(obj);
+	if (cb) cb(obj);
+	return {key: key, obj: obj};
 }
 
 function saveTest (data, cb) {
-	var key = data.issueKey + ',' + data.pageId + ',' + data.pageVersion;
-	var obj = localStorage[key] ? JSON.parse(localStorage[key]) : {};
-	obj[data.testId] = data.testStatus;
-	localStorage[key] = JSON.stringify(obj);
+	var tests = getTests(data);
+	tests.obj[data.testId] = data.testStatus;
+	localStorage[tests.key] = JSON.stringify(tests.obj);
 	cb();
 }

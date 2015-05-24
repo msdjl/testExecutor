@@ -102,8 +102,7 @@ function applyContext (e) {
 					pageVersion: pageInfo.pageVersion,
 					issueKey: newContextVal
 				}, function (resp) {
-					var tests = resp;
-					contentMethod('setContext', {issueKey: newContextVal, tests: tests}, function () {
+					contentMethod('setContext', {issueKey: newContextVal, tests: resp}, function () {
 						showPage('.statusForm');
 					});
 				});

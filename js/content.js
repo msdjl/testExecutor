@@ -34,7 +34,7 @@ function removeButtons () {
 	updateTrBackground();
 }
 
-function clickButtonHandler (e) {
+function clickButtonHandler () {
 	var newStatus,
 		buttonEl = $(this),
 		testEl = buttonEl.parent(),
@@ -109,11 +109,11 @@ function getPageInfo (params, cb) {
 
 	if (pageHistory) {
 		obj.pageId = pageHistory.pageId;
-		obj.pageVersion = pageHistory.originalVersion;
+		obj.pageVersion = pageHistory['originalVersion'];
 	}
 	else {
 		obj.pageId = lastModified.pageId;
-		obj.pageVersion = lastModified.selectedPageVersions ? lastModified.selectedPageVersions[1] : '1';
+		obj.pageVersion = lastModified['selectedPageVersions'] ? lastModified['selectedPageVersions'][1] : '1';
 	}
 	if (cb) cb(obj);
 	return obj;
