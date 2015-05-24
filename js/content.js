@@ -165,7 +165,7 @@ function fixWikiPage (tests, body) {
 function setContext (context, cb) {
 	if (context) {
 		$('#content').data('issueKey', context.issueKey);
-		drawButtons(context.tests.tests);
+		drawButtons(context.tests);
 	}
 	else {
 		$('#content').data('issueKey', '');

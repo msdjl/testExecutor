@@ -41,3 +41,17 @@ function screenshot (data, cb) {
 		sendResultsToJira(data, cb);
 	});
 }
+
+function getTests (data, cb) {
+	var key = data.issueKey + ',' + data.pageId + ',' + data.pageVersion;
+	var obj = localStorage[key] ? JSON.parse(localStorage[key]) : {};
+	cb(obj);
+}
+
+function saveTest (data, cb) {
+	var key = data.issueKey + ',' + data.pageId + ',' + data.pageVersion;
+	var obj = localStorage[key] ? JSON.parse(localStorage[key]) : {};
+	obj[data.testId] = data.testStatus;
+	localStorage[key] = JSON.stringify(obj);
+	cb();
+}

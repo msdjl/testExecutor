@@ -17,12 +17,12 @@ $(function () {
 		$('#overlap').show();
 		contentMethod('getPageInfo', null, function (pageInfo) {
 			var pageUrl = 'https://wiki.returnonintelligence.com/pages/viewpage.action?pageId=' + pageInfo.pageId;
-			var comment = 'Tested on version ' + pageInfo.pageVersion;
-			comment += ' of the [checklist|' + pageUrl + ']';
-			comment += '\n\nAmount of tests: ' + pageInfo.amountOfTests;
-			comment += '\nPassed: ' + pageInfo.passed;
-			comment += '\nFailed: ' + pageInfo.failed;
-			comment += '\nNot checked: ' + pageInfo.notCheckedYet;
+			var comment = 'Tested on version ' + pageInfo.pageVersion
+				+ ' of the [checklist|' + pageUrl + ']'
+				+ '\n\nAmount of tests: ' + pageInfo.amountOfTests
+				+ '\nPassed: ' + pageInfo.passed
+				+ '\nFailed: ' + pageInfo.failed
+				+ '\nNot checked: ' + pageInfo.notCheckedYet;
 			var data = {
 				pageId: pageInfo.pageId,
 				pageVersion: pageInfo.pageVersion,
@@ -102,7 +102,7 @@ function applyContext (e) {
 					pageVersion: pageInfo.pageVersion,
 					issueKey: newContextVal
 				}, function (resp) {
-					var tests = resp.responseJSON;
+					var tests = resp;
 					contentMethod('setContext', {issueKey: newContextVal, tests: tests}, function () {
 						showPage('.statusForm');
 					});
