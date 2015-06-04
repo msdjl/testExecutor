@@ -3,7 +3,9 @@
 	"version": "0.0.1",
 	"private": "true",
 	"scripts": {
-		"start": "gulp watch"
+		"install": "bower i",
+		"postinstall": "gulp",
+		"start": "gulp"
 	},
 	"dependencies": {
 		"gulp": "latest",
