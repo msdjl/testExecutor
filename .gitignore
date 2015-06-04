@@ -1,5 +1,5 @@
 .idea/*
 .DS_Store
-.bower/*
-html/*.html
+bower/*
+dist/*
 node_modules/*
