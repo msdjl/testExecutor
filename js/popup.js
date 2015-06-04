@@ -41,12 +41,7 @@ $(function () {
 		}
 		else {
 			contentMethod('getPageInfo', null, function (pageInfo) {
-				if (pageInfo.issueKey) {
-					showPage('.statusForm');
-				}
-				else {
-					showPage('.mainForm');
-				}
+				showPage(pageInfo.issueKey ? '.statusForm' : '.mainForm');
 			});
 		}
 		$('#overlap').hide();
@@ -55,14 +50,15 @@ $(function () {
 
 function login (e) {
 	if ( e.type == 'click' || (e.type == 'keypress' && e.which == 13) ) {
+			var password = $('#password'),
+			credential = {
+				username: $('#username').val(),
+				password: password.val()
+			};
 		$('#overlap').show();
-		var u = $('#username').val();
-		var p = $('#password').val();
-		backgroundMethod('login', { username: u, password: p }, function (resp) {
-			$('#password').val('');
-			if (resp.status == 200) {
-				showPage('.mainForm');
-			}
+		backgroundMethod('login', credential, function (resp) {
+			(resp.status == 200) && showPage('.mainForm');
+			password.val('');
 			$('#overlap').hide();
 		});
 	}
@@ -71,44 +67,38 @@ function login (e) {
 function showPage(page) {
 	$('.loginForm, .mainForm, .statusForm').hide();
 	$(page).show();
-	if (page == '.statusForm') {
-		contentMethod('getPageInfo', null, function (pageInfo) {
-			$('#sfIssueId').text(pageInfo.issueKey);
-			$('#sfPageVersion').text(pageInfo.pageVersion);
-			$('#sfPageId').text(pageInfo.pageId);
-			$('#sfAmountOfTests').text(pageInfo.amountOfTests);
-			$('#sfPassed').text(pageInfo.passed);
-			$('#sfFailed').text(pageInfo.failed);
-			$('#sfNotCheckedYet').text(pageInfo.notCheckedYet);
-		});
+	switch (page) {
+		case '.statusForm': contentMethod('getPageInfo', null, updateStatusPage); break;
+		case '.mainForm': $('#context').focus(); break;
+		case '.loginForm': $('#username').focus(); break;
 	}
-	if (page == '.mainForm') {
-		$('#context').focus();
-	}
-	if (page == '.loginForm') {
-		$('#username').focus();
-	}
+}
+
+function updateStatusPage (pageInfo) {
+	$('#sfIssueId').text(pageInfo.issueKey);
+	$('#sfPageVersion').text(pageInfo.pageVersion);
+	$('#sfPageId').text(pageInfo.pageId);
+	$('#sfAmountOfTests').text(pageInfo.amountOfTests);
+	$('#sfPassed').text(pageInfo.passed);
+	$('#sfFailed').text(pageInfo.failed);
+	$('#sfNotCheckedYet').text(pageInfo.notCheckedYet);
 }
 
 function applyContext (e) {
 	if ( e.type == 'click' || (e.type == 'keypress' && e.which == 13) ) {
-		var changeContext = e.target.id == 'changecontext';
-		var contextEl = $('#context');
-		var newContextVal = contextEl.val();
+		var changeContext = e.target.id == 'changecontext',
+			contextEl = $('#context'),
+			newContextVal = contextEl.val();
 		if (!changeContext && newContextVal) {
 			contentMethod('getPageInfo', null, function (pageInfo) {
-				backgroundMethod('getTests', {
-					pageId: pageInfo.pageId,
-					pageVersion: pageInfo.pageVersion,
-					issueKey: newContextVal
-				}, function (resp) {
-					contentMethod('setContext', {issueKey: newContextVal, tests: resp}, function () {
+				pageInfo.issueKey = newContextVal;
+				backgroundMethod('getTests', pageInfo, function (tests) {
+					contentMethod('setContext', {issueKey: newContextVal, tests: tests}, function () {
 						showPage('.statusForm');
 					});
 				});
 			});
-		}
-		else if (changeContext) {
+		} else if (changeContext) {
 			contextEl.val('');
 			contentMethod('setContext', null);
 			showPage('.mainForm');

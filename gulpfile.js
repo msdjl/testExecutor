@@ -10,6 +10,7 @@ gulp.task('jade', function() {
 		.on('error', console.log)
 		.pipe(gulp.dest('./html/'));
 });
+
 gulp.task('dist', function() {
 	del(['dist/*'], function () {
 		gulp.src(['./html/*.html'])
@@ -30,3 +31,5 @@ gulp.task('dist', function() {
 			.pipe(gulp.dest('dist/bower/jquery/dist'));
 	});
 });
+
+gulp.task('default', ['jade', 'dist']);
