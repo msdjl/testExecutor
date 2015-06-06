@@ -1,22 +1,18 @@
 function drawButtons (tests) {
-	var pageInfo = getPageInfo();
 	$.get(chrome.extension.getURL('/html/buttons.html'), function(template) {
-		var t = $(template);
-		t.find('.btn').click(clickButtonHandler);
-
 		$('tbody tr').find('td:first').each(function (n, el) {
-			var data = $.extend( {}, pageInfo, { testId: n, testStatus: tests[n] || '' } );
-			var container = t.clone(true, true).data(data);
-			$(el).append(container);
+			$(template).data({testId: n, testStatus: tests[n]||''}).addClass(tests[n] || '').appendTo(el);
 		});
-
-		updateTrBackground();
+		$('.testExecutorContainer').data(getPageInfo())
+			.find('.btn').click(clickButtonHandler);
+		$('tr:has(.testExecutorContainer.Passed)').addClass('Passed');
+		$('tr:has(.testExecutorContainer.Failed)').addClass('Failed');
 	});
 }
 
 function removeButtons () {
 	$('.testExecutorContainer').remove();
-	updateTrBackground();
+	$('.Passed, .Failed').removeClass('Passed Failed');
 }
 
 function clickButtonHandler () {
@@ -24,26 +20,10 @@ function clickButtonHandler () {
 		buttonEl = $(this),
 		testEl = buttonEl.parent(),
 		trEl = testEl.parent().parent();
-
 	newStatus = buttonEl.data('newStatus');
 	testEl.data('testStatus', newStatus);
-	updateTrBackground(trEl);
-
+	trEl.removeClass('Passed Failed').addClass(newStatus);
 	backgroundMethod('saveTest', testEl.data());
-}
-
-function updateTrBackground (tr) {
-	var target = tr || $('tbody tr');
-	target.removeClass('bg-success bg-danger');
-	target.each(function (n, el) {
-		var status = $(el).find('.testExecutorContainer').data('testStatus');
-		if (status == 'Passed') {
-			$(el).addClass('bg-success');
-		}
-		else if (status == 'Failed') {
-			$(el).addClass('bg-danger');
-		}
-	});
 }
 
 function urlParse (url) {
@@ -95,56 +75,38 @@ function getPageInfo (params, cb) {
 }
 
 function screenshot (params, cb) {
-	var body = null;
-	var tests = {};
-	$('.testExecutorContainer').each(function (n, el) {
-		tests[n] = $(el).data('testStatus');
-	});
-	var frame = $('<iframe>')
-		.attr('width', 1500)
-		.attr('height', 1000)
-		.attr('src', window.location.href)
-		.appendTo('body')
-		.on('load', function () {
-			body = frame[0].contentDocument.body;
-			fixWikiPage(tests, body);
-			html2canvas(body, {
-				onrendered: function(canvas) {
-					frame.remove();
-					cb(canvas.toDataURL());
-				}
+	backgroundMethod('getTests', getPageInfo(), function (tests) {
+		var frame = $('<iframe>')
+			.attr('src', window.location.href)
+			.appendTo('body')
+			.on('load', function () {
+				var body = frame[0].contentDocument.body;
+				$.get(chrome.extension.getURL('/css/content.css'), function(template) {
+					$(body).parent().find('head').append($('<style>' + template + '</style>'));
+					fixWikiPage(tests, body);
+					html2canvas(body, {
+						onrendered: function(canvas) {
+							frame.remove();
+							cb(canvas.toDataURL());
+						}
+					});
+				});
 			});
-		});
+	});
 }
 
 function fixWikiPage (tests, body) {
 	tests = tests || {};
 	body = $(body || window.document.body);
 	body.html(body.find('#main').html());
-	body.find('#comments-section, #likes-and-labels-container, #navigation, #page-history-warning').remove();
-	body.find('.table-wrap').css('overflow', 'visible');
-	body.parent().css('padding', '10px').css('backgroundColor', 'white');
-	body.css('overflow', 'visible').css('backgroundColor', 'white');
+	body.addClass('forScreenshot');
 	body.find('tbody tr').find('td:first').each(function (n, el) {
-		var status = tests[n] || '';
-		var tr = $(el).parent();
-		if (status == 'Passed') {
-			tr.css('backgroundColor', 'rgb(223, 240, 216)');
-		}
-		else if (status == 'Failed') {
-			tr.css('backgroundColor', 'rgb(242, 222, 222)');
-		}
+		$(el).parent().addClass(tests[n] || '');
 	});
 }
 
 function setContext (context, cb) {
-	if (context) {
-		$('#content').data('issueKey', context.issueKey);
-		drawButtons(context.tests);
-	}
-	else {
-		$('#content').data('issueKey', '');
-		removeButtons();
-	}
-	return cb ? cb(true) : true;
+	$('#content').data('issueKey', context ? context.issueKey : '');
+	context ? drawButtons(context.tests) : removeButtons();
+	cb(true);
 }

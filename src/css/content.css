@@ -4,35 +4,30 @@
     src: url('chrome-extension://__MSG_@@extension_id__/bower/bootstrap/dist/fonts/glyphicons-halflings-regular.eot');
     src: url('chrome-extension://__MSG_@@extension_id__/bower/bootstrap/dist/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('chrome-extension://__MSG_@@extension_id__/bower/bootstrap/dist/fonts/glyphicons-halflings-regular.woff') format('woff'), url('chrome-extension://__MSG_@@extension_id__/bower/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('chrome-extension://__MSG_@@extension_id__/bower/bootstrap/dist/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
-
 h1 {
 	font-size: 24px;
 	font-weight: normal;
 	line-height: 1.25;
 	margin: 40px 0 0 0;
 }
-
 h2 {
 	font-size: 20px;
 	font-weight: normal;
 	line-height: 1.5;
 	margin: 40px 0 0 0;
 }
-
 h3 {
 	font-size: 16px;
 	line-height: 1.5625;
 	margin: 30px 0 0 0;
 	font-weight: bold;
 }
-
 h4 {
 	font-size: 14px;
 	line-height: 1.5;
 	margin: 20px 0 0 0;
 	font-weight: bold;
 }
-
 h5 {
 	color: #707070;
 	font-size: 12px;
@@ -40,7 +35,6 @@ h5 {
 	margin: 20px 0 0 0;
 	font-weight: bold;
 }
-
 h6 {
 	color: #707070;
 	font-size: 12px;
@@ -48,11 +42,32 @@ h6 {
 	margin: 20px 0 0 0;
 	font-weight: bold;
 }
-
 h1:first-child,h2:first-child,h3:first-child,h4:first-child,h5:first-child,h6:first-child {
 	margin-top: 0;
 }
-
 h1+h2,h2+h3,h3+h4,h4+h5,h5+h6 {
 	margin-top: 10px;
+}
+
+tr.Passed {
+	background-color: rgb(223, 240, 216);
+}
+tr.Failed {
+	background-color: rgb(242, 222, 222);
+}
+
+iframe {
+	width: 1500px;
+	height: 1000px;
+}
+.forScreenshot {
+	overflow: visible;
+	background-color: white;
+	padding: 10px;
+}
+.forScreenshot #comments-section, #likes-and-labels-container, #navigation, #page-history-warning {
+	display: none;
+}
+.forScreenshot .table-wrap {
+	overflow: visible;
 }
