@@ -2,31 +2,17 @@ html, body {
     width: 300px;
     padding-top: 5px;
 }
-.loginForm {
+.loginForm, .mainForm, .statusForm {
     display: none;
-}
-.mainForm {
-    display: none;
-}
-.statusForm {
-    display: none;
-}
-#changecontext {
-    margin-bottom: 15px;
-}
-#throbber {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    width: 100px;
-    height: 100px;
-    margin: -50px -50px 50px -50px;
-    z-index: 1000;
 }
 #overlap {
     width: 100%;
     height: 100%;
-    position: fixed;
-    z-index: 999;
+	position: fixed;
+    display: flex;
+	z-index: 999;
     background-color: #ffffff;
+}
+#overlap img {
+	margin: auto;
 }

@@ -1,18 +1,3 @@
-chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
-	if (request.method && !sender.tab) {
-		window[request.method](request.params, sendResponse);
-		return true;
-	}
-});
-
-function backgroundMethod (method, params, cb) {
-	sendMessage({ method: method, params: params }, cb);
-}
-
-function sendMessage (data, cb) {
-	chrome.runtime.sendMessage(data, cb);
-}
-
 function drawButtons (tests) {
 	var pageInfo = getPageInfo();
 	$.get(chrome.extension.getURL('/html/buttons.html'), function(template) {
@@ -44,10 +29,7 @@ function clickButtonHandler () {
 	testEl.data('testStatus', newStatus);
 	updateTrBackground(trEl);
 
-	testEl.find('.btn').prop('disabled', true);
-	backgroundMethod('saveTest', testEl.data(), function () {
-		testEl.find('.btn').prop('disabled', false);
-	});
+	backgroundMethod('saveTest', testEl.data());
 }
 
 function updateTrBackground (tr) {
@@ -91,19 +73,13 @@ function getPageInfo (params, cb) {
 		testsEls = $('.testExecutorContainer');
 	obj.issueKey = $('#content').data('issueKey');
 
-	obj.amountOfTests = testsEls.length;
-	obj.passed = 0;
-	obj.failed = 0;
-	obj.notCheckedYet = obj.amountOfTests;
+	obj.amountOfTests = obj.notCheckedYet = testsEls.length;
+	obj.passed = obj.failed = 0;
 	testsEls.each(function (n, el) {
 		var status = $(el).data('testStatus');
-		if (status == 'Passed') {
-			obj.passed++;
+		if (status) {
 			obj.notCheckedYet--;
-		}
-		else if (status == 'Failed') {
-			obj.failed++;
-			obj.notCheckedYet--;
+			status == 'Passed' ? obj.passed++ : obj.failed++;
 		}
 	});
 
@@ -115,8 +91,7 @@ function getPageInfo (params, cb) {
 		obj.pageId = lastModified.pageId;
 		obj.pageVersion = lastModified['selectedPageVersions'] ? lastModified['selectedPageVersions'][1] : '1';
 	}
-	if (cb) cb(obj);
-	return obj;
+	return cb ? cb(obj) : obj;
 }
 
 function screenshot (params, cb) {
@@ -171,6 +146,5 @@ function setContext (context, cb) {
 		$('#content').data('issueKey', '');
 		removeButtons();
 	}
-	if (cb) cb(true);
-	return true;
+	return cb ? cb(true) : true;
 }

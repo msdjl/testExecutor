@@ -19,6 +19,7 @@
 	"background": {
 		"scripts": [
 			"bower/jquery/dist/jquery.min.js",
+			"js/messaging.js",
 			"js/service.js",
 			"js/background.js"
 		],
@@ -29,6 +30,7 @@
 		"js": [
 			"bower/jquery/dist/jquery.min.js",
 			"bower/html2canvas/build/html2canvas.min.js",
+			"js/messaging.js",
 			"js/content.js"
 		],
 		"css": [
