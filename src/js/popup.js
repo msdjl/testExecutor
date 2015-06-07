@@ -12,39 +12,19 @@ $(function () {
 	$('#context').keypress(applyContext);
 
 	$('#sendtojira').click(function () {
-		contentMethod('getPageInfo', null, function (pageInfo) {
-			var pageUrl = 'https://wiki.returnonintelligence.com/pages/viewpage.action?pageId=' + pageInfo.pageId;
-			var comment = 'Tested on version ' + pageInfo.pageVersion
-				+ ' of the [checklist|' + pageUrl + ']'
-				+ '\n\nAmount of tests: ' + pageInfo.amountOfTests
-				+ '\nPassed: ' + pageInfo.passed
-				+ '\nFailed: ' + pageInfo.failed
-				+ '\nNot checked: ' + pageInfo.notCheckedYet;
-			var data = {
-				pageId: pageInfo.pageId,
-				pageVersion: pageInfo.pageVersion,
-				issueKey: pageInfo.issueKey,
-				comment: comment
-			};
-			backgroundMethod('screenshot', data);
-		});
+		backgroundMethod('screenshot');
 	});
 
 	backgroundMethod('isAuthorized', null, function (resp) {
-		if (resp.status != 200) {
-			showPage('.loginForm');
-		}
-		else {
-			contentMethod('getPageInfo', null, function (pageInfo) {
-				showPage(pageInfo.issueKey ? '.statusForm' : '.mainForm');
-			});
-		}
+		(resp.status != 200) ? showPage('.loginForm') : contentMethod('getPageInfo', null, function (pageInfo) {
+			showPage(pageInfo.issueKey ? '.statusForm' : '.mainForm');
+		});
 	});
 });
 
 function login (e) {
 	if ( e.type == 'click' || (e.type == 'keypress' && e.which == 13) ) {
-			var password = $('#password'),
+		var password = $('#password'),
 			credential = {
 				username: $('#username').val(),
 				password: password.val()

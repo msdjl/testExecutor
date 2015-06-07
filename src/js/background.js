@@ -14,9 +14,24 @@ chrome.runtime.onInstalled.addListener(function() {
 });
 
 function screenshot (data, cb) {
-	contentMethod('screenshot', null, function (img) {
-		data.img = img.substring(22);
-		sendResultsToJira(data, cb);
+	contentMethod('getPageInfo', null, function (pageInfo) {
+		var pageUrl = 'https://wiki.returnonintelligence.com/pages/viewpage.action?pageId=' + pageInfo.pageId,
+			comment = 'Tested on version ' + pageInfo.pageVersion
+				+ ' of the [checklist|' + pageUrl + ']'
+				+ '\n\nAmount of tests: ' + pageInfo.amountOfTests
+				+ '\nPassed: ' + pageInfo.passed
+				+ '\nFailed: ' + pageInfo.failed
+				+ '\nNot checked: ' + pageInfo.notCheckedYet,
+			data = {
+				pageId: pageInfo.pageId,
+				pageVersion: pageInfo.pageVersion,
+				issueKey: pageInfo.issueKey,
+				comment: comment
+			};
+		contentMethod('screenshot', null, function (img) {
+			data.img = img.substring(22);
+			sendResultsToJira(data, cb);
+		});
 	});
 }
 
