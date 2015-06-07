@@ -11,10 +11,10 @@ function logout (params, cb) {
 }
 
 function sendResultsToJira (params, cb) {
+	var blob = b64toBlob(params.img),
+		formData = new FormData();
+	formData.append('file', blob, params.issueKey + '_' + params.pageId + '_' + params.pageVersion + '.png');
 	requestToService('/rest/api/2/issue/' + params.issueKey + '/comment', 'POST', JSON.stringify({body: params.comment}), function () {
-		var formData = new FormData();
-		var blob = b64toBlob(params.img);
-		formData.append('file', blob, params.issueKey + '_' + params.pageId + '_' + params.pageVersion + '.png');
 		requestToService('/rest/api/2/issue/' + params.issueKey + '/attachments', 'POST', formData, cb, true);
 	});
 }
@@ -39,18 +39,16 @@ function requestToService (url, type, data, cb, isFile) {
 }
 
 function b64toBlob(b64Data, contentType, sliceSize) {
-	contentType = contentType || '';
+	var byteCharacters = atob(b64Data),
+		byteArrays = [];
 	sliceSize = sliceSize || 512;
-	var byteCharacters = atob(b64Data);
-	var byteArrays = [];
 	for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-		var slice = byteCharacters.slice(offset, offset + sliceSize);
-		var byteNumbers = new Array(slice.length);
+		var slice = byteCharacters.slice(offset, offset + sliceSize),
+			byteNumbers = new Array(slice.length);
 		for (var i = 0; i < slice.length; i++) {
 			byteNumbers[i] = slice.charCodeAt(i);
 		}
-		var byteArray = new Uint8Array(byteNumbers);
-		byteArrays.push(byteArray);
+		byteArrays.push(new Uint8Array(byteNumbers));
 	}
-	return new Blob(byteArrays, {type: contentType});
+	return new Blob(byteArrays, {type: contentType || ''});
 }

@@ -1,9 +1,7 @@
 $(function () {
 	$('#logout').click(function () {
-		$('#overlap').show();
 		backgroundMethod('logout', null, function () {
 			showPage('.loginForm');
-			$('#overlap').hide();
 		});
 	});
 
@@ -14,7 +12,6 @@ $(function () {
 	$('#context').keypress(applyContext);
 
 	$('#sendtojira').click(function () {
-		$('#overlap').show();
 		contentMethod('getPageInfo', null, function (pageInfo) {
 			var pageUrl = 'https://wiki.returnonintelligence.com/pages/viewpage.action?pageId=' + pageInfo.pageId;
 			var comment = 'Tested on version ' + pageInfo.pageVersion
@@ -29,9 +26,7 @@ $(function () {
 				issueKey: pageInfo.issueKey,
 				comment: comment
 			};
-			backgroundMethod('screenshot', data, function () {
-				$('#overlap').hide();
-			});
+			backgroundMethod('screenshot', data);
 		});
 	});
 
@@ -44,7 +39,6 @@ $(function () {
 				showPage(pageInfo.issueKey ? '.statusForm' : '.mainForm');
 			});
 		}
-		$('#overlap').hide();
 	});
 });
 
@@ -55,11 +49,9 @@ function login (e) {
 				username: $('#username').val(),
 				password: password.val()
 			};
-		$('#overlap').show();
 		backgroundMethod('login', credential, function (resp) {
 			(resp.status == 200) && showPage('.mainForm');
 			password.val('');
-			$('#overlap').hide();
 		});
 	}
 }

@@ -16,7 +16,11 @@ function sendMessageToTab (data, cb) {
 }
 
 function backgroundMethod (method, params, cb) {
-	sendMessageToBackground({ method: method, params: params }, cb);
+	$('#overlap').show();
+	sendMessageToBackground({ method: method, params: params }, function (data) {
+		$('#overlap').hide();
+		if (cb) { cb(data); }
+	});
 }
 
 function sendMessageToBackground (data, cb) {
