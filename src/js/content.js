@@ -98,7 +98,7 @@ function fixWikiPage (tests, body) {
 
 function setContext (context, cb) {
 	pageInfo.issueKey = context ? context.issueKey : '';
-	tests = context ? context.tests : {};
-	context ? drawButtons(tests) : removeButtons();
-	cb(true);
+	!context ? cb(removeButtons()) : backgroundMethod('getTests', getPageInfo(), function (newTests) {
+		cb(drawButtons(tests = newTests));
+	});
 }

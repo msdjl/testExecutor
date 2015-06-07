@@ -90,13 +90,8 @@ function applyContext (e) {
 			contextEl = $('#context'),
 			newContextVal = contextEl.val();
 		if (!changeContext && newContextVal) {
-			contentMethod('getPageInfo', null, function (pageInfo) {
-				pageInfo.issueKey = newContextVal;
-				backgroundMethod('getTests', pageInfo, function (tests) {
-					contentMethod('setContext', {issueKey: newContextVal, tests: tests}, function () {
-						showPage('.statusForm');
-					});
-				});
+			contentMethod('setContext', {issueKey: newContextVal}, function () {
+				showPage('.statusForm');
 			});
 		} else if (changeContext) {
 			contextEl.val('');
