@@ -12,10 +12,13 @@ function logout (params, cb) {
 
 function sendResultsToJira (params, cb) {
 	var blob = b64toBlob(params.img),
-		formData = new FormData();
-	formData.append('file', blob, params.issueKey + '_' + params.pageId + '_' + params.pageVersion + '.png');
-	requestToService('/rest/api/2/issue/' + params.issueKey + '/comment', 'POST', JSON.stringify({body: params.comment}), function () {
-		requestToService('/rest/api/2/issue/' + params.issueKey + '/attachments', 'POST', formData, cb, true);
+		formData = new FormData(),
+		commonURL = '/rest/api/2/issue/' + params.issueKey,
+		comment = JSON.stringify({body: params.comment}),
+		imgName = params.issueKey + '_' + params.pageId + '_' + params.pageVersion + '.png';
+	formData.append('file', blob, imgName);
+	requestToService(commonURL + '/comment', 'POST', comment, function () {
+		requestToService(commonURL + '/attachments', 'POST', formData, cb, true);
 	});
 }
 

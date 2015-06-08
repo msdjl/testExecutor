@@ -12,7 +12,7 @@ $(function () {
 	$('#context').keypress(applyContext);
 
 	$('#sendtojira').click(function () {
-		backgroundMethod('screenshot');
+		backgroundMethod('generateReport');
 	});
 
 	backgroundMethod('isAuthorized', null, function (resp) {

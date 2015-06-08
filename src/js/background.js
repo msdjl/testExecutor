@@ -13,7 +13,7 @@ chrome.runtime.onInstalled.addListener(function() {
 	});
 });
 
-function screenshot (data, cb) {
+function generateReport (data, cb) {
 	contentMethod('getPageInfo', null, function (pageInfo) {
 		var pageUrl = 'https://wiki.returnonintelligence.com/pages/viewpage.action?pageId=' + pageInfo.pageId,
 			comment = 'Tested on version ' + pageInfo.pageVersion
